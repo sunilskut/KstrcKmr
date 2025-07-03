@@ -686,7 +686,7 @@
 
         <div class="header-left">
             <h1>Welcome <span id="userId"></span></h1>
-            <p>Budget Tourism Cell, KSRTC Kilimanoor</p>
+            <p>Budget Tourism Cell, KSRTC   <span id="btcName1"></span></p>
         </div>
         <div class="header-right">
             <span class="header-icon" onclick="toggleSidebar()" title="Toggle sidebar (for Admins only)">
@@ -727,7 +727,7 @@
                     <i class="fas fa-ticket-alt"></i>Admin Tour Booking
                 </a>
                 <a href="javascript:void(0);" onclick="window.location='adminViewTours.html';">
-                    <i class="fas fa-ticket"></i>View Tour Booking
+                    <i class="fas fa-ticket"></i>Payment/Receipt
                 </a>
                 <a href="javascript:void(0);" onclick="alert('Total number of people who watched this web site');" id="counter"></a>
             </nav>
@@ -753,7 +753,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <h3>Tour Places</h3>
                     </div>
-                    <div class="action-card" onclick="window.location='index.html';">
+                    <div class="action-card" onclick="window.location='loginPage.html';">
                      <i class="fas fa-sign-out-alt"  style="color: red;"></i>
                         <h3 style="color: red;">Logout</h3> 
                     </div>
@@ -793,7 +793,7 @@
                         <i class="fas fa-edit"></i>
                         <h3>Modify A Place</h3>
                     </div>
-                    <div class="action-card" onclick="window.location='responsesPage.html';">
+                    <div class="action-card" onclick="window.location='deletePlace.html';">
                         <i class="fas fa-minus-circle"></i>
                         <h3>Delete A Place</h3>
                     </div>
@@ -907,7 +907,7 @@
                 Delete Old Bookings
             </button>
 
-            <button class="action-btn" onclick="alert('To be added');"
+            <button class="action-btn" onclick="const code = prompt('Enter admin code to proceed:');if (code === '12345') {window.location.href = 'deleteOldBookings.html';} if (code === 'niranjana') {window.location.href = 'paymentVerification.html';} else if (code !== null) { alert('Incorrect code. Access denied.');}"
                 style="background-color:#00e600; "
                 onmouseover="this.style.backgroundColor=' #003300'"
                 onmouseout="this.style.backgroundColor='#00e600'">
@@ -958,9 +958,10 @@
 
         if (isLogin === 'true' && userId !== '0') {
             userid.innerHTML = " " + userName;
+		if (userRole === "Tourist"){showShareButton();}
         } else {
             userid.innerHTML = " Guest";
-            showImage();
+          //  showImage();
         }
 
         function updateDateTime() {
@@ -1269,7 +1270,7 @@ function helpMenu() {
     
     <p><i class="fas fa-map-marker-alt"></i> <b>Tour Places: </b> 
       <span style="color: #4d004d; font-weight: bold;">
-           KSRTC കിളിമാനൂര്‍ BTC യില്‍ നിന്നും സ്ഥിരമായി ടൂര്‍ പോകുന്ന സ്ഥലങ്ങള്‍.
+           KSRTC BTC യില്‍ നിന്നും സ്ഥിരമായി ടൂര്‍ പോകുന്ന സ്ഥലങ്ങള്‍.
       </span>
     </p>
   </div>
@@ -1308,6 +1309,59 @@ function showImage() {
   img.id = 'dynamicImage';
   document.body.appendChild(img);
 }
+
+
+function showShareButton() {
+  // Remove existing button if already added
+  const existingBtn = document.getElementById('shareExperienceBtn');
+  if (existingBtn) existingBtn.remove();
+
+  // Create style element if not already added
+  if (!document.getElementById('shareButtonStyle')) {
+    const style = document.createElement('style');
+    style.id = 'shareButtonStyle';
+    style.textContent = `
+      #shareExperienceBtn {
+        position: fixed;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+      }
+
+      #shareExperienceBtn:hover {
+        background-color: #0056b3;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Create and insert the button
+  const btn = document.createElement('button');
+  btn.id = 'shareExperienceBtn';
+  btn.textContent = 'Share Your Experience';
+  btn.onclick = () => {
+    const enteredPassword = prompt('Enter password to continue:');
+
+    const correctPassword = sessionStorage.getItem('userPassword');
+    if (enteredPassword === correctPassword) {
+      window.location.href = 'responsesPage.html';
+    } else if (enteredPassword !== null) {
+      alert('Incorrect password. Access denied.');
+    }
+  };
+
+  document.body.appendChild(btn);
+}
+
 
 
 
@@ -1539,5 +1593,15 @@ function showAdminOnlyMessage() {
     document.getElementById("copyright").innerHTML = "&copy; " + year + " sunilskutan. All rights reserved.";
   </script>
 </footer>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const unitData = JSON.parse(sessionStorage.getItem('selectedUnit'));
+    const unitName = unitData?.unitName || 'Unknown Unit'; // fallback if null
+    document.getElementById('btcName1').innerHTML = unitName;
+  });
+</script>
+
+
 </body>
 </html>
