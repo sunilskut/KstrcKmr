@@ -4,11 +4,12 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://sunilskut.github.io/testArea",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "predeploy": "npm run build",
-   "deploy": "gh-pages -d dist"
+ "scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+}
   },
   "dependencies": {
     "react": "^19.1.1",
